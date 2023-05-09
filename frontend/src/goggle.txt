@@ -1,0 +1,10 @@
+BigQuery Omni => 클라우드 제약을 받지 않는다.
+모델 데이터 -> 보통 정형화된 데이터를 거쳐 생성한다.
+
+Object Table => SQL 기반 메타데이터 활용 및 비정형데이터 기반 모델 파이프라인 지원
+이미지 파일을 활용해서 사용하는 것도 가능
+BigQuery 내에서 머신러닝 실행,반복,자동화 구현
+
+Confluent --> 실시간 데이터 분석을 도와주는 솔루션
+KsqlDB --> 스트림과 데이터 테이블 작업을 위한 이벤트 처리 스트리밍 엔진
+Elastic Platform --> (Kbana??)(UI), ElasticSearch(저장,검색,분석), Integration(데이터 수집)
