@@ -1,4 +1,4 @@
-package com.poscodx.economy.repository;
+package com.poscodx.economy.repository.jpa;
 
 import com.poscodx.economy.domain.IncomeSpending;
 import com.poscodx.economy.domain.User;
