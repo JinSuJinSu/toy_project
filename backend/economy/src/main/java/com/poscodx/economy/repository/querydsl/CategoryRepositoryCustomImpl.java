@@ -1,23 +1,20 @@
 package com.poscodx.economy.repository.querydsl;
 
 import com.poscodx.economy.domain.Category;
-import com.poscodx.economy.repository.CustomCategoryRepository;
+import com.poscodx.economy.domain.QCategory;
+import com.poscodx.economy.repository.CategoryRepositoryCustom;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import javax.persistence.EntityManager;
+import lombok.RequiredArgsConstructor;
 
-public class CategoryRepositoryImpl implements CustomCategoryRepository{
+@RequiredArgsConstructor
+public class CategoryRepositoryCustomImpl implements CategoryRepositoryCustom {
 
     // querydsl 생성자 만들기
-    private final EntityManager em;
+//    private final EntityManager em;
     private final JPAQueryFactory query;
 
-    public CategoryRepositoryImpl(EntityManager em) {
-        this.em = em;
-        this.query = new JPAQueryFactory(em);
-    }
-
     @Override
-    public Category findByCategoryName(String categoryName) {
+    public Category findCategoryName(String categoryName) {
         QCategory category = QCategory.category;
         return query.selectFrom(category)
                 .where(category.categoryCom.name.eq(categoryName))

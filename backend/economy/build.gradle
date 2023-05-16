@@ -6,17 +6,23 @@ buildscript {
 }
 
 plugins {
-	id 'java'
 	id 'org.springframework.boot' version '2.7.10'
 	id 'io.spring.dependency-management' version '1.0.15.RELEASE'
 
 	//querydsl 추가
-	id 'com.ewerk.gradle.plugins.querydsl' version '1.0.10'
+	id "com.ewerk.gradle.plugins.querydsl" version "1.0.10"
+	id 'java'
 }
 
 group = 'com.poscodx'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '11'
+
+configurations {
+	compileOnly {
+		extendsFrom annotationProcessor
+	}
+}
 
 repositories {
 	mavenCentral()
@@ -76,7 +82,7 @@ querydsl {
 sourceSets {
 	main.java.srcDir querydslDir
 }
-compileQuerydsl {
+compileQuerydsl{
 	options.annotationProcessorPath = configurations.querydsl
 }
 configurations {

@@ -26,8 +26,11 @@ public class CategoryTestUtils {
                 "식비 카테고리", "아직은 없어도 된다.");
         Category category2 = createCategory("자기개발", creationDate, updateDate,
                 "자기개발 카테고리", "아직은 없어도 된다.");
+        Category category3 = createCategory("가족서포트", creationDate, updateDate,
+                "가족서포트 카테고리", "아직은 없어도 된다.");
         em.persist(category1);
         em.persist(category2);
+        em.persist(category3);
     }
 
     private static Category createCategory(String name, LocalDateTime creationDate, LocalDateTime updateDate,
