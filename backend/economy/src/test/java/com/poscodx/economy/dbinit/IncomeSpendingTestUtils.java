@@ -1,64 +1,43 @@
-//package com.poscodx.economy.dbinit;
-//
-//import com.poscodx.economy.domain.Category;
-//import com.poscodx.economy.domain.IncomeSpending;
-//import com.poscodx.economy.domain.User;
-//import com.poscodx.economy.enumration.DataCode;
-//import lombok.RequiredArgsConstructor;
-//import org.springframework.stereotype.Component;
-//import org.springframework.transaction.annotation.Transactional;
-//
-//import javax.persistence.EntityManager;
-//import java.time.LocalDateTime;
-//
-//@Component
-//@Transactional
-//@RequiredArgsConstructor
-//public class IncomeSpendingTestUtils {
-//
-//    private final EntityManager em;
-//
-//    public void dbInit() {
-//        Asset asset1 =
-//                createAsset("주식", 10000L);
-//        em.persist(asset1);
-//
-//        Asset asset2 =
-//                createAsset("원자재", 9000L);
-//        em.persist(asset2);
-//
-//        Asset asset3 =
-//                createAsset("외화", 8000L);
-//        em.persist(asset3);
-//
-//        Asset asset4 =
-//                createAsset("코인", 7000L);
-//        em.persist(asset4);
-//
-//        Asset asset5 =
-//                createAsset("현금", 10000L);
-//        em.persist(asset5);
-//
-//        Asset asset6 =
-//                createAsset("펀드", 10000L);
-//        em.persist(asset6);
-//
-//        Asset asset7 =
-//                createAsset("연금", 12000L);
-//        em.persist(asset7);
-//    }
-//    private IncomeSpending createData(LocalDateTime creationDate, DataCode dataCode, User user,
-//                                      String content, Long amount, Category category) {
-//
-//        IncomeSpending incomeSpending =
-//                new IncomeSpending().builder()
-//                        .creationDate(creationDate)
-//                        .dataCode(dataCode)
-//                        .user(user)
-//                        .content(content)
-//                        .amount(amount)
-//                        .category(category)
-//                        .build();
-//        return incomeSpending;
-//    }
-//}
+package com.poscodx.economy.dbinit;
+
+import com.poscodx.economy.domain.Category;
+import com.poscodx.economy.domain.IncomeSpending;
+import com.poscodx.economy.domain.User;
+import com.poscodx.economy.enumration.DataCode;
+import com.poscodx.economy.enumration.UserGrade;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
+import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
+
+@Component
+@Transactional
+@RequiredArgsConstructor
+@Slf4j
+public class IncomeSpendingTestUtils {
+
+    public static void addIncomeSpending(TestEntityManager em, DataCode dataCode,
+                                         String content, Long amount, User user, Category category) {
+        IncomeSpending incomeSpending = createIncomeSpending(dataCode, content, amount, user, category);
+        em.persist(incomeSpending);
+    }
+
+    private static IncomeSpending createIncomeSpending(DataCode dataCode, String content, Long amount,
+                                             User user, Category category) {
+
+        IncomeSpending incomeSpending =
+                new IncomeSpending().builder()
+                        .dataCode(dataCode)
+                        .content(content)
+                        .amount(amount)
+                        .user(user)
+                        .category(category)
+                        .build();
+        log.info("생성된 거래내역 데이터 : " + incomeSpending);
+        return incomeSpending;
+    }
+}

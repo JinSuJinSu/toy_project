@@ -19,15 +19,12 @@ import java.time.LocalDateTime;
         name = "INCOME_SPENDING_SEQ_GENERATOR",
         sequenceName = "INCOME_SPENDING_SEQ",
         initialValue = 1, allocationSize = 20)
-public class IncomeSpending {
+public class IncomeSpending extends BaseTimeEntity{
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "INCOME_SPENDING_SEQ_GENERATOR")
     @Column(name = "income_spending_id")
     private long id;
-
-    @NotNull
-    private LocalDateTime creationDate;
 
     @NotNull
     @Enumerated(EnumType.STRING)

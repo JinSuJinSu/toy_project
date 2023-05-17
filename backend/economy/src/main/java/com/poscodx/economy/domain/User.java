@@ -18,7 +18,7 @@ import java.time.LocalDateTime;
         name = "USER_SEQ_GENERATOR",
         sequenceName = "USER_SEQ",
         initialValue = 1, allocationSize = 10)
-public class User {
+public class User extends BaseTimeEntity{
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "USER_SEQ_GENERATOR")
@@ -43,7 +43,4 @@ public class User {
     @NotNull
     @Enumerated(EnumType.STRING)
     private UserGrade grade;
-
-    @NotNull
-    private LocalDateTime joinDate;
 }

@@ -1,6 +1,8 @@
 package com.poscodx.economy.domain;
 
 import lombok.*;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
 
 import javax.persistence.Embeddable;
 import javax.validation.constraints.NotNull;
@@ -12,16 +14,10 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-public class CategoryCom {
+public class CategoryCom extends BaseTimeEntity{
 
     @NotNull
     private String name;
-
-    @NotNull
-    private LocalDateTime creationDate;
-
-    @NotNull
-    private LocalDateTime updateDate;
 
     private String content;
     private String categoryData;
