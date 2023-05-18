@@ -20,10 +20,10 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Import;
-import org.springframework.test.annotation.Rollback;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -51,7 +51,7 @@ class IncomeSpendingRepositoryTest {
         CategoryTestUtils.addCategory(em);
         
         // 거래내역 데이터 추가하기
-        User user = userRepository.findByUserId("hjs429");
+        Optional<User> user = userRepository.findByUserId("hjs429");
         Category category1 = categoryRepository.findByCategoryCom_Name("식비");
         Category category2 = categoryRepository.findByCategoryCom_Name("자기개발");
         Category category3 = categoryRepository.findCategoryName("투자수익");
@@ -70,7 +70,7 @@ class IncomeSpendingRepositoryTest {
     @DisplayName("유저생성 테스트")
     void searchUser(){
         // given
-        User user = userRepository.findByUserId("hjs429");
+        Optional<User> user = userRepository.findByUserId("hjs429");
         
         // when
         String userId = user.getUserId();

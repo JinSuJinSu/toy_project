@@ -16,11 +16,9 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class IncomeSpendingDto {
 
-    private long id;
-    private LocalDateTime creationDate;
-    private DataCode dataCode;
+    private String createdDate;
+    private String dataCode;
     private String content;
     private Long amount;
-    private User user;
-    private Category category;
+    private String categoryName;
 }

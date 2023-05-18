@@ -14,7 +14,8 @@ import java.util.List;
 
 @Repository
 public interface IncomeSpendingRepository extends JpaRepository<IncomeSpending, Long>, IncomeSpendingRepositoryCustom {
-    List<IncomeSpending> findByCreatedDateBetween(LocalDateTime startDateTime, LocalDateTime endDateTime);
+    List<IncomeSpending> findByUser_UserIdAndCreatedDateBetween(
+            String userId, LocalDateTime startDateTime, LocalDateTime endDateTime);
 
     List<IncomeSpending> findAll();
 }
