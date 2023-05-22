@@ -23,9 +23,9 @@ import org.springframework.context.annotation.Import;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.Assert.assertNotNull;
 
 @DataJpaTest
 @ComponentScan(basePackages = "com.poscodx.economy.repository")
@@ -51,7 +51,7 @@ class IncomeSpendingRepositoryTest {
         CategoryTestUtils.addCategory(em);
         
         // 거래내역 데이터 추가하기
-        Optional<User> user = userRepository.findByUserId("hjs429");
+        User user = userRepository.findByUserId("hjs429");
         Category category1 = categoryRepository.findByCategoryCom_Name("식비");
         Category category2 = categoryRepository.findByCategoryCom_Name("자기개발");
         Category category3 = categoryRepository.findCategoryName("투자수익");
@@ -60,7 +60,7 @@ class IncomeSpendingRepositoryTest {
                 10000L,user, category1);
         IncomeSpendingTestUtils.addIncomeSpending(em, DataCode.지출, "권투수강",
                 30000L,user, category2);
-        IncomeSpendingTestUtils.addIncomeSpending(em, DataCode.수입, "주식매수",
+        IncomeSpendingTestUtils.addIncomeSpending(em, DataCode.수입, "주식매도",
                 50000L,user, category3);
         
         
@@ -70,8 +70,8 @@ class IncomeSpendingRepositoryTest {
     @DisplayName("유저생성 테스트")
     void searchUser(){
         // given
-        Optional<User> user = userRepository.findByUserId("hjs429");
-        
+        User user = userRepository.findByUserId("hjs429");
+
         // when
         String userId = user.getUserId();
         //then
@@ -104,9 +104,11 @@ class IncomeSpendingRepositoryTest {
         // given
         LocalDateTime startDate = LocalDateTime.now().minusDays(0);
         LocalDateTime endDate = LocalDateTime.now().plusDays(3);
+        User user = userRepository.findByUserId("hjs429");
+        String userId = user.getUserId();
 //        incomeSpendingListtt.forEach(data -> System.out.println("생성날짜 : " + data.getCreatedDate()));
         List<IncomeSpending> incomeSpendingList =
-                incomeSpendingRepository.findByCreatedDateBetween(startDate, endDate);
+                incomeSpendingRepository.findDataByDateTime(userId, startDate, endDate);
 
         // when
         int size = incomeSpendingList.size();

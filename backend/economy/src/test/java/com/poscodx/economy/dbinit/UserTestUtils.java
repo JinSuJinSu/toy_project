@@ -24,7 +24,7 @@ public class UserTestUtils {
         em.persist(user1);
     }
 
-    private static User createUser(String userId, String password, String name,
+    public static User createUser(String userId, String password, String name,
                                    String phoneNumber, String email, UserGrade grade) {
 
         User user =

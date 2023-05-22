@@ -31,7 +31,7 @@ public class CategoryTestUtils {
         em.persist(category3);
     }
 
-    private static Category createCategory(String name, String content, String categoryData) {
+    public static Category createCategory(String name, String content, String categoryData) {
 
         Category category =
                 new Category().builder()

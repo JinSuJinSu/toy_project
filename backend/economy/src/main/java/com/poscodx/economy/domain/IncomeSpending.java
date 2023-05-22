@@ -1,12 +1,11 @@
 package com.poscodx.economy.domain;
 
 import com.poscodx.economy.enumration.DataCode;
-import com.poscodx.economy.enumration.UserGrade;
 import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.time.LocalDateTime;
+import java.util.Optional;
 
 @Entity
 @Builder
