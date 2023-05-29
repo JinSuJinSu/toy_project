@@ -6,7 +6,7 @@ import { columns } from "../render/BasicTableHeader";
 import AppStore from "AppStore";
 import { observer } from "mobx-react-lite";
 
-const BasicContainer = observer(() => {
+const ExcelContainer = observer(() => {
   const userId = useContext(UserContext);
   const height = 400;
   const pagingList = [5, 10, 20];
@@ -35,4 +35,4 @@ const BasicContainer = observer(() => {
   );
 });
 
-export default BasicContainer;
+export default ExcelContainer;

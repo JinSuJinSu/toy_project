@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-public class CategoryCom extends BaseTimeEntity{
+public class CategoryCom{
 
     @NotNull
     private String name;

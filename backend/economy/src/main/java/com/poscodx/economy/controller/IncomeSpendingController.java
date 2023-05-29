@@ -1,6 +1,7 @@
 package com.poscodx.economy.controller;
 
 import com.poscodx.economy.dto.IncomeSpendingDto;
+import com.poscodx.economy.serviceImpl.IncomeSpendingServiceImpl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,13 +17,16 @@ import java.util.List;
 @Slf4j
 public class IncomeSpendingController {
 
-    @GetMapping("/test/{startDate}/{endDate}")
+    private final IncomeSpendingServiceImpl incomeSpendingService;
+
+    @GetMapping("/test/{userId}/{startDate}/{endDate}")
     public List<IncomeSpendingDto> getMoneyData(
+            @PathVariable("userId") String userId,
             @PathVariable("startDate") String startDate,
             @PathVariable("endDate") String endDate) {
-        log.info("시작날짜 : " + startDate);
-        log.info("끝날짜 : " + endDate);
-
-        return null;
+        List<IncomeSpendingDto> resultList =
+                incomeSpendingService.getIncomeSpendingList(userId, startDate, endDate);
+        log.info("최종 결과값 : " + resultList);
+        return resultList;
     }
 }

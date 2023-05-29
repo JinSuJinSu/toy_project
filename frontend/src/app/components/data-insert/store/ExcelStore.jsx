@@ -3,7 +3,7 @@ import { observable, runInAction } from "mobx";
 import { toJS } from "mobx";
 import { dateTimeLogic } from "../model/BasicModel";
 
-const BasicStore = observable({
+const ExcelStore = observable({
   rows: [],
 
   // 날짜별 거래내역서 데이터 조회
@@ -21,4 +21,4 @@ const BasicStore = observable({
   },
 });
 
-export { BasicStore };
+export { ExcelStore };

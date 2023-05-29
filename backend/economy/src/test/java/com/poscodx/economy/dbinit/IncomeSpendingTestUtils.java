@@ -37,18 +37,4 @@ public class IncomeSpendingTestUtils {
         log.info("생성된 거래내역 데이터 : " + incomeSpending);
         return incomeSpending;
     }
-
-    public static IncomeSpendingDto createIncomeSpendingDto(String createDate, String dataCode, String content,
-                                                            Long amount, String categoryName) {
-
-        IncomeSpendingDto incomeSpendingDto =
-                new IncomeSpendingDto().builder()
-                        .createdDate(createDate)
-                        .dataCode(dataCode)
-                        .content(content)
-                        .amount(amount)
-                        .categoryName(categoryName)
-                        .build();
-        return incomeSpendingDto;
-    }
 }

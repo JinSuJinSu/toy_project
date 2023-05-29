@@ -21,4 +21,8 @@ public abstract class BaseTimeEntity {
     // 조회한 Entity 값을 변경할 때 시간이 자동 저장
     @LastModifiedDate
     private LocalDateTime modifiedDate;
+
+    private void setCreatedDateForTest(LocalDateTime createdDate){
+        this.createdDate = createdDate;
+    }
 }

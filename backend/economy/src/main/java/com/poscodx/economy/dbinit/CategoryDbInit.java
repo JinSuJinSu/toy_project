@@ -2,36 +2,36 @@ package com.poscodx.economy.dbinit;
 
 import com.poscodx.economy.domain.Category;
 import com.poscodx.economy.domain.CategoryCom;
-import com.poscodx.economy.domain.User;
-import com.poscodx.economy.enumration.UserGrade;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
-import java.time.temporal.ChronoUnit;
+import javax.persistence.EntityManager;
 
 @Component
 @Transactional
 @RequiredArgsConstructor
 @Slf4j
-public class CategoryTestUtils {
+public class CategoryDbInit {
 
-    public static void addCategory(TestEntityManager em){
+    private final EntityManager em;
+
+    public void dbInit(){
         Category category1 = createCategory("식비", "식비 카테고리",
                 "아직은 없어도 된다.");
+        em.persist(category1);
+
         Category category2 = createCategory("자기개발", "자기개발 카테고리",
                 "아직은 없어도 된다.");
+        em.persist(category2);
+
         Category category3 = createCategory("투자수익", "투자수익 카테고리",
                 "아직은 없어도 된다.");
-        em.persist(category1);
-        em.persist(category2);
         em.persist(category3);
     }
 
-    public static Category createCategory(String name, String content, String categoryData) {
+    private Category createCategory(String name, String content, String categoryData) {
 
         Category category =
                 new Category().builder()

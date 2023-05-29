@@ -4,7 +4,7 @@ import { DataGrid } from "@mui/x-data-grid";
 // This method is created for cross-browser compatibility, if you don't
 // need to support IE11, you can use Array.prototype.sort() directly
 
-const BasicTableView = ({
+const ExcelTableView = ({
   height,
   rows,
   columns,
@@ -30,4 +30,4 @@ const BasicTableView = ({
     </Box>
   );
 };
-export default BasicTableView;
+export default ExcelTableView;

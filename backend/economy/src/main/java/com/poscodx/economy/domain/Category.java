@@ -14,7 +14,7 @@ import javax.persistence.*;
         name = "CATEGORY_SEQ_GENERATOR",
         sequenceName = "CATEGORY_SEQ",
         initialValue = 1, allocationSize = 10)
-public class Category {
+public class Category extends BaseTimeEntity{
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "CATEGORY_SEQ_GENERATOR")

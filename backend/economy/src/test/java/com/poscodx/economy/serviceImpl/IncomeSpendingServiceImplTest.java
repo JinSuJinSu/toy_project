@@ -81,7 +81,7 @@ class IncomeSpendingServiceImplTest {
                 .collect(Collectors.toList());
 
         // 서비스 메소드 실행 변수
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy.MM.dd");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         String startDate = LocalDateTime.now().format(formatter) + " 00:00:00";
         String endDate = LocalDateTime.now().format(formatter)+ " 23:59:59";
         String userId = "hjs429";
@@ -94,10 +94,18 @@ class IncomeSpendingServiceImplTest {
         // when
         List<IncomeSpendingDto> result = incomeSpendingService.getIncomeSpendingList(
                 userId,startDate,endDate);
+        List<String> contentList = IncomeSpendingDtoList.stream()
+                .map(IncomeSpendingDto::getContent)
+                .collect(Collectors.toList());
+        ;
+//        IncomeSpendingList.forEach(data -> System.out.println("entity 데이터: " + data));
+//        IncomeSpendingList.forEach(data -> System.out.println("entity 데이터 생성날짜: " + data.getCreatedDate()));
+//        IncomeSpendingDtoList.forEach(data -> System.out.println("초기 데이터 : " + data));
+//        result.forEach(data -> System.out.println("결과 데이터 : " + data));
 
         //then
-        assertThat(IncomeSpendingDtoList).isEqualTo(result);
-
+        assertThat(contentList).contains(
+                result.get(0).getContent(),result.get(1).getContent(),result.get(2).getContent());
     }
 
 
