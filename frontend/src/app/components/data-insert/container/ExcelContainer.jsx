@@ -1,37 +1,67 @@
 import React from "react";
 import { useState, useContext, useEffect } from "react";
-import BasicTableView from "../view/BasicTableView";
 import { UserContext } from "app/contexts/UserContext";
 import { columns } from "../render/BasicTableHeader";
 import AppStore from "AppStore";
+import ExcelTableView from "../view/ExcelTableView";
 import { observer } from "mobx-react-lite";
+import * as XLSX from "xlsx";
+import { Input } from "@mui/material";
 
 const ExcelContainer = observer(() => {
   const userId = useContext(UserContext);
   const height = 400;
   const pagingList = [5, 10, 20];
   const [pageSize, setPageSize] = React.useState(5);
+  const [items, setItems] = useState([]);
+  const { ExcelStore } = AppStore();
 
-  let startDate = new Date();
-  startDate.setDate(new Date().getDate() - 7);
-  const endDate = new Date();
-  // 기본 조회는 오늘 기준 최대 7일 까지만
+  const fileInput = React.createRef();
+  const fileReader = new FileReader();
 
-  const { BasicStore } = AppStore();
+  const readExcel = (file) => {
+    const promise = new Promise((resolve, reject) => {
+      fileReader.readAsArrayBuffer(file);
 
-  useEffect(() => {
-    BasicStore.showInfo(userId, startDate, endDate);
-  }, []);
+      fileReader.onload = (e) => {
+        const bufferArray = e.target.result;
+        const wb = XLSX.read(bufferArray, { type: "buffer" });
+        const wsname = wb.SheetNames[0];
+        const ws = wb.Sheets[wsname];
+        const data = XLSX.utils.sheet_to_json(ws);
+        resolve(data);
+      };
 
+      fileReader.onerror = (error) => {
+        reject(error);
+      };
+    });
+    promise.then((d) => {
+      setItems(d);
+    });
+  };
+
+  const handleFileInput = (e) => {
+    const file = e.target.files[0];
+    readExcel(file);
+  };
   return (
-    <BasicTableView
-      height={height}
-      rows={BasicStore.rows}
-      columns={columns}
-      pageSize={pageSize}
-      setPageSize={setPageSize}
-      pagingList={pagingList}
-    />
+    <>
+      <Input type="file" ref={fileInput} onChange={handleFileInput} />
+      <ul>
+        {items.map((item, index) => (
+          <li key={index}>{JSON.stringify(item)}</li>
+        ))}
+      </ul>
+      <ExcelTableView
+        height={height}
+        rows={[]}
+        columns={columns}
+        pageSize={pageSize}
+        setPageSize={setPageSize}
+        pagingList={pagingList}
+      />
+    </>
   );
 });
 
