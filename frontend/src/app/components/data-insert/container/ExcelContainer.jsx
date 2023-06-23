@@ -13,7 +13,8 @@ const ExcelContainer = observer(() => {
   const height = 400;
   const pagingList = [5, 10, 20];
   const [pageSize, setPageSize] = React.useState(5);
-  const [items, setItems] = useState([]);
+  const [rows, setRows] = useState([]);
+  const [columns, setColumns] = useState([]);
   const { ExcelStore } = AppStore();
 
   const fileInput = React.createRef();
@@ -28,7 +29,7 @@ const ExcelContainer = observer(() => {
         const wb = XLSX.read(bufferArray, { type: "buffer" });
         const wsname = wb.SheetNames[0];
         const ws = wb.Sheets[wsname];
-        const data = XLSX.utils.sheet_to_json(ws);
+        const data = XLSX.utils.sheet_to_json(ws).slice(0, -1);
         resolve(data);
       };
 
@@ -36,8 +37,11 @@ const ExcelContainer = observer(() => {
         reject(error);
       };
     });
-    promise.then((d) => {
-      setItems(d);
+    promise.then((rowData) => {
+      rowData.forEach((row) => {
+        row.id = row.No;
+      });
+      setRows(rowData);
     });
   };
 
@@ -45,17 +49,18 @@ const ExcelContainer = observer(() => {
     const file = e.target.files[0];
     readExcel(file);
   };
+
   return (
     <>
       <Input type="file" ref={fileInput} onChange={handleFileInput} />
-      <ul>
-        {items.map((item, index) => (
+      {/* <ul>
+        {rows.map((item, index) => (
           <li key={index}>{JSON.stringify(item)}</li>
         ))}
-      </ul>
+      </ul> */}
       <ExcelTableView
         height={height}
-        rows={[]}
+        rows={rows}
         columns={columns}
         pageSize={pageSize}
         setPageSize={setPageSize}

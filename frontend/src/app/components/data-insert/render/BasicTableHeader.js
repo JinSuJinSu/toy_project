@@ -6,7 +6,7 @@ let columns = [
     headerName: "No",
   },
   {
-    field: "createdDate",
+    field: "거래일시",
     headerName: "거래일시",
   },
   {
@@ -14,16 +14,12 @@ let columns = [
     headerName: "거래종류",
   },
   {
-    field: "content",
+    field: "거래내용",
     headerName: "거래내용",
   },
   {
     field: "amount",
     headerName: "거래금액",
-  },
-  {
-    field: "categoryName",
-    headerName: "카테고리",
   },
 ];
 
