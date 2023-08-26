@@ -6,6 +6,7 @@ import com.poscodx.economy.dbinit.IncomeSpendingTestUtils;
 import com.poscodx.economy.dbinit.UserTestUtils;
 import com.poscodx.economy.domain.Category;
 import com.poscodx.economy.domain.IncomeSpending;
+import com.poscodx.economy.domain.Payment;
 import com.poscodx.economy.domain.User;
 import com.poscodx.economy.enumration.DataCode;
 import com.poscodx.economy.repository.jpa.CategoryRepository;
@@ -26,6 +27,7 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 
 @DataJpaTest
 @ComponentScan(basePackages = "com.poscodx.economy.repository")
@@ -48,12 +50,12 @@ class IncomeSpendingRepositoryTest {
     public void init() {
         System.out.println("데이터 삽입 시작");
         UserTestUtils.addUser(em);
-        CategoryTestUtils.addCategory(em);
-        
+
         // 거래내역 데이터 추가하기
         User user = userRepository.findByUserId("hjs429");
-        Category category1 = categoryRepository.findByCategoryCom_Name("식비");
-        Category category2 = categoryRepository.findByCategoryCom_Name("자기개발");
+        CategoryTestUtils.addCategory(em, user);
+        Category category1 = categoryRepository.findByName("식비");
+        Category category2 = categoryRepository.findByName("자기개발");
         Category category3 = categoryRepository.findCategoryName("투자수익");
 
         IncomeSpendingTestUtils.addIncomeSpending(em, DataCode.지출, "순대국밥",
@@ -83,13 +85,13 @@ class IncomeSpendingRepositoryTest {
     @DisplayName("카테고리 생성 테스트")
     void searchCategory(){
         // given
-        Category category1 = categoryRepository.findByCategoryCom_Name("식비");
-        Category category2 = categoryRepository.findByCategoryCom_Name("자기개발");
+        Category category1 = categoryRepository.findByName("식비");
+        Category category2 = categoryRepository.findByName("자기개발");
         Category category3 = categoryRepository.findCategoryName("투자수익");
         // when
-        String categoryName1 = category1.getCategoryCom().getName();
-        String categoryName2 = category2.getCategoryCom().getName();
-        String categoryName3 = category3.getCategoryCom().getName();
+        String categoryName1 = category1.getName();
+        String categoryName2 = category2.getName();
+        String categoryName3 = category3.getName();
         System.out.println("객체 : " + category1);
         //then
         assertThat(categoryName1).isEqualTo("식비");
@@ -115,9 +117,7 @@ class IncomeSpendingRepositoryTest {
 
         //then
         assertThat(size).isEqualTo(0);
-
     }
-
 
 
 }

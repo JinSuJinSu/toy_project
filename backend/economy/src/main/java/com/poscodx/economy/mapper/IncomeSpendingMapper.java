@@ -19,7 +19,7 @@ public interface IncomeSpendingMapper {
 //    @Mapping(source = "userId", target = "user.userId")
 //    Order toEntity(OrderDto dto);
 
-    @Mapping(source = "category.categoryCom.name", target = "categoryName")
+    @Mapping(source = "category.name", target = "categoryName")
     @Mapping(source = "category.createdDate", target = "createdDate", qualifiedByName = "formatDateToString")
     IncomeSpendingDto toDto(IncomeSpending entity);
 

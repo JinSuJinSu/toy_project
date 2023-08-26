@@ -3,6 +3,7 @@ package com.poscodx.economy.domain;
 import lombok.*;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @Builder
@@ -21,15 +22,13 @@ public class Category extends BaseTimeEntity{
     @Column(name = "category_id")
     private long id;
 
-    @Embedded
-    private CategoryCom categoryCom;
+    @NotNull
+    private String name;
+    private String content;
+    private String categoryData;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="detail_category_id")
-    private DetailCategory detailCategory;
-
-
-
-
+    @JoinColumn(name="user_pk")
+    private User user;
 
 }

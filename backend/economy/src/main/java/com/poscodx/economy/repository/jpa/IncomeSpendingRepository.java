@@ -1,6 +1,7 @@
 package com.poscodx.economy.repository.jpa;
 
 import com.poscodx.economy.domain.IncomeSpending;
+import com.poscodx.economy.domain.Payment;
 import com.poscodx.economy.domain.User;
 import com.poscodx.economy.repository.IncomeSpendingRepositoryCustom;
 import lombok.extern.slf4j.Slf4j;
@@ -13,9 +14,8 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Repository
-public interface IncomeSpendingRepository extends JpaRepository<IncomeSpending, Long>, IncomeSpendingRepositoryCustom {
-//    List<IncomeSpending> findByUser_UserIdAndCreatedDateBetween(
-//            String userId, LocalDateTime startDateTime, LocalDateTime endDateTime);
+public interface IncomeSpendingRepository extends
+        JpaRepository<IncomeSpending, Long>, IncomeSpendingRepositoryCustom {
 
     List<IncomeSpending> findAll();
 }

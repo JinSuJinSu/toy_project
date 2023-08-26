@@ -12,6 +12,7 @@ const ExcelTableView = ({
   setPageSize,
   pagingList,
 }) => {
+  console.log("데이터 : ", rows);
   return (
     <Box sx={{ height: height, width: "100%" }}>
       <DataGrid

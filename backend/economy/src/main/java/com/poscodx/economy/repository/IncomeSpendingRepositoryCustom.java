@@ -9,4 +9,5 @@ public interface IncomeSpendingRepositoryCustom {
 
     List<IncomeSpending> findDataByDateTime(String userId,
                                             LocalDateTime startDateTime, LocalDateTime endDateTime);
+
 }

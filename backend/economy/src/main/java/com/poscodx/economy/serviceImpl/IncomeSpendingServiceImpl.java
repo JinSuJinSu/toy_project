@@ -2,11 +2,13 @@ package com.poscodx.economy.serviceImpl;
 
 import com.poscodx.economy.domain.IncomeSpending;
 import com.poscodx.economy.domain.User;
+import com.poscodx.economy.dto.CategoryDto;
 import com.poscodx.economy.dto.IncomeSpendingDto;
 import com.poscodx.economy.mapper.IncomeSpendingMapper;
 import com.poscodx.economy.repository.jpa.IncomeSpendingRepository;
 import com.poscodx.economy.repository.jpa.UserRepository;
 import com.poscodx.economy.service.IncomeSpendingService;
+import com.querydsl.core.Tuple;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -45,4 +47,5 @@ public class IncomeSpendingServiceImpl implements IncomeSpendingService {
                         .collect(Collectors.toList());
         return IncomeSpendingDtoList;
     }
+
 }

@@ -8,37 +8,65 @@ import { faCaretDown, faCaretRight } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { observer } from "mobx-react-lite";
 import { ListItem, ListItemText, List } from "@mui/material";
-const CategoryView = observer(({ list, handleChange }) => {
-  return (
-    <DropdownMenu>
-      {list.map((element, index) => {
-        return (
-          <>
-            {element.content}
-            <FontAwesomeIcon
-              key={element.id}
-              icon={element.isClosed ? faCaretRight : faCaretDown}
-              style={{ fontSize: "24px", cursor: "pointer" }}
-              onClick={() => handleChange(index)}
-            />
-            {!element.isClosed
-              ? element.detailList.map((detailElement) => {
-                  return <li>{detailElement.content}</li>;
-                })
-              : ""}
-            <br />
-            <br />
-            <br />
-          </>
-        );
-      })}
-      <DropdownContent>
-        <DropdownItem href="#">Link 1</DropdownItem>
-        <DropdownItem href="#">Link 2</DropdownItem>
-        <DropdownItem href="#">Link 3</DropdownItem>
-      </DropdownContent>
-    </DropdownMenu>
-  );
-});
+import DropDownContainer from "../container/DropDownContainer";
+import { Button } from "@mui/material";
+import { toJS } from "mobx";
+const CategoryView = observer(
+  ({
+    list,
+    selectedCategory,
+    setSelectedCategory,
+    selectedDetailCategory,
+    setSelectedDetailCategory,
+  }) => {
+    return (
+      <div>
+        <div style={{ display: "flex", justifyContent: "space-between" }}>
+          {Object.keys(list).map((categoryName) => (
+            <Button
+              key={categoryName}
+              onClick={() => {
+                setSelectedCategory(
+                  selectedCategory === categoryName ? null : categoryName
+                );
+              }}
+            >
+              {categoryName}
+            </Button>
+          ))}
+        </div>
+        <div>
+          {selectedCategory &&
+            Object.keys(list[selectedCategory]).map((detailCategoryName) => (
+              <Button
+                key={detailCategoryName}
+                onClick={() => {
+                  setSelectedDetailCategory(
+                    selectedDetailCategory === detailCategoryName
+                      ? null
+                      : detailCategoryName
+                  );
+                }}
+              >
+                {detailCategoryName}
+              </Button>
+            ))}
+        </div>
+        <div>
+          {!!selectedCategory &&
+            !!selectedDetailCategory &&
+            !!list[selectedCategory][selectedDetailCategory] &&
+            Object.keys(list[selectedCategory][selectedDetailCategory]).map(
+              (paymentIndex) => (
+                <ListItem key={paymentIndex}>
+                  {list[selectedCategory][selectedDetailCategory][paymentIndex]}
+                </ListItem>
+              )
+            )}
+        </div>
+      </div>
+    );
+  }
+);
 
 export default CategoryView;

@@ -14,7 +14,6 @@ const ExcelContainer = observer(() => {
   const pagingList = [5, 10, 20];
   const [pageSize, setPageSize] = React.useState(5);
   const [rows, setRows] = useState([]);
-  const [columns, setColumns] = useState([]);
   const { ExcelStore } = AppStore();
 
   const fileInput = React.createRef();
@@ -40,6 +39,9 @@ const ExcelContainer = observer(() => {
     promise.then((rowData) => {
       rowData.forEach((row) => {
         row.id = row.No;
+      });
+      rowData.forEach((row) => {
+        console.log("데이터를 구하시오 : ", row.출금);
       });
       setRows(rowData);
     });

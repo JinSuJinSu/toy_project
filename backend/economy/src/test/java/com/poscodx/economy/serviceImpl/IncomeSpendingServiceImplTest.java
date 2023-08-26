@@ -55,11 +55,11 @@ class IncomeSpendingServiceImplTest {
 
         // 카테고리 목록
         Category category1 = CategoryTestUtils.createCategory("식비", "식비 카테고리",
-                "아직은 없어도 된다.");
+                "아직은 없어도 된다.", user);
         Category category2 = CategoryTestUtils.createCategory("자기개발", "자기개발 카테고리",
-                "아직은 없어도 된다.");
+                "아직은 없어도 된다.", user);
         Category category3 = CategoryTestUtils.createCategory("투자수익", "투자수익 카테고리",
-                "아직은 없어도 된다.");
+                "아직은 없어도 된다.", user);
 
         // 거래내역 데이터 목록
         IncomeSpending incomeSpending1 =
