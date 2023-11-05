@@ -11,6 +11,8 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
+
 @Component
 @Transactional
 @RequiredArgsConstructor
@@ -18,23 +20,44 @@ import org.springframework.transaction.annotation.Transactional;
 public class IncomeSpendingTestUtils {
 
     public static void addIncomeSpending(TestEntityManager em, DataCode dataCode,
-                                         String content, Long amount, User user, Category category) {
-        IncomeSpending incomeSpending = createIncomeSpending(dataCode, content, amount, user, category);
+                                         String content, Long amount,  LocalDateTime transactionDate,
+                                         User user, Category category) {
+        IncomeSpending incomeSpending =
+                createIncomeSpending(dataCode, content, amount, transactionDate, user, category);
         em.persist(incomeSpending);
     }
 
     public static IncomeSpending createIncomeSpending(DataCode dataCode, String content, Long amount,
-                                                       User user, Category category) {
+                                                      LocalDateTime transactionDate, User user,
+                                                      Category category) {
 
         IncomeSpending incomeSpending =
                 new IncomeSpending().builder()
                         .dataCode(dataCode)
                         .content(content)
                         .amount(amount)
+                        .transactionDate(transactionDate)
                         .user(user)
                         .category(category)
                         .build();
         log.info("생성된 거래내역 데이터 : " + incomeSpending);
         return incomeSpending;
+    }
+
+    public static IncomeSpendingDto createIncomeSpendingDto(String dataCode, String content, Long amount,
+                                                      String transactionDate, String userId,
+                                                      String categoryName) {
+
+        IncomeSpendingDto incomeSpendingDto =
+                new IncomeSpendingDto().builder()
+                        .dataCode(dataCode)
+                        .content(content)
+                        .amount(amount)
+                        .transactionDate(transactionDate)
+                        .userId(userId)
+                        .categoryName(categoryName)
+                        .build();
+        log.info("생성된 거래내역 데이터 : " + incomeSpendingDto);
+        return incomeSpendingDto;
     }
 }

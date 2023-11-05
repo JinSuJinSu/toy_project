@@ -20,7 +20,7 @@ public class IncomeSpendingRepositoryCustomImpl implements IncomeSpendingReposit
         QIncomeSpending incomeSpending = QIncomeSpending.incomeSpending;
         return query.selectFrom(incomeSpending)
                 .where(incomeSpending.user.userId.eq(userId)
-                        .and(incomeSpending.createdDate.between(startDateTime,endDateTime)))
+                        .and(incomeSpending.transactionDate.between(startDateTime,endDateTime)))
                 .fetch();
     }
 }

@@ -7,10 +7,7 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
-import java.time.LocalDateTime;
 import java.util.List;
-
-import static com.poscodx.economy.domain.QPayment.payment;
 
 @RequiredArgsConstructor
 @Slf4j
@@ -29,16 +26,19 @@ public class CategoryRepositoryCustomImpl implements CategoryRepositoryCustom {
     }
 
     @Override
-    public Long findCategoryIdByPayment(String paymentData) {
+    public Category findCategoryByPayment(String paymentData, String userId) {
         QCategory category = QCategory.category;
         QDetailCategory detailCategory = QDetailCategory.detailCategory;
         QPayment payment = QPayment.payment;
+        QUser user = QUser.user;
             return query
-                    .select(category.id)
+                    .select(category)
                     .from(payment)
                     .join(payment.detailCategory, detailCategory)
                     .join(detailCategory.category, category)
-                    .where(payment.data.eq(paymentData))
+                    .join(category.user, user)
+                    .where(payment.data.eq(paymentData)
+                            .and(user.userId.eq(userId)))
                     .fetchOne();
         }
 

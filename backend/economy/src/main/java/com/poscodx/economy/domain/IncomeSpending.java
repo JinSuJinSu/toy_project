@@ -5,6 +5,7 @@ import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 @Entity
@@ -35,6 +36,9 @@ public class IncomeSpending extends BaseTimeEntity{
     @NotNull
     private Long amount;
 
+    @NotNull
+    private LocalDateTime transactionDate;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="user_pk")
     private User user;
@@ -42,6 +46,11 @@ public class IncomeSpending extends BaseTimeEntity{
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="category_id")
     private Category category;
+
+    public void setUserAndCategory(User user, Category category){
+        this.user = user;
+        this.category = category;
+    }
 
 
 }

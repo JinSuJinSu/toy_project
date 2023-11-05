@@ -2,12 +2,9 @@ package com.poscodx.economy.repository;
 
 import com.poscodx.economy.config.QuerydslConfiguration;
 import com.poscodx.economy.dbinit.CategoryTestUtils;
-import com.poscodx.economy.dbinit.IncomeSpendingTestUtils;
 import com.poscodx.economy.dbinit.UserTestUtils;
 import com.poscodx.economy.domain.*;
-import com.poscodx.economy.enumration.DataCode;
 import com.poscodx.economy.repository.jpa.CategoryRepository;
-import com.poscodx.economy.repository.jpa.IncomeSpendingRepository;
 import com.poscodx.economy.repository.jpa.PaymentRepository;
 import com.poscodx.economy.repository.jpa.UserRepository;
 import com.poscodx.economy.repository.querydsl.CategoryRepositoryCustomImpl;
@@ -21,7 +18,6 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Import;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -135,16 +131,16 @@ public class CategoryRepositoryTest {
     @DisplayName("Payment 데이터로 카테고리 조회하기")
     void searchCategoryByPayment(){
         // given
-        String insertData = "뛰빠국밥";
-        Optional<Payment> payment =  paymentRepository.findByData(insertData);
-        Long categoryId = null;
+        String insertData = "선달국밥";
+        Optional<Payment> payment =  paymentRepository.findFirstByData(insertData);
+        Category category = null;
 
         // when
         if(payment.isPresent()){
-            categoryId = categoryRepository.findCategoryIdByPayment(insertData);
+            String userId = ("hjs429");
+            category = categoryRepository.findCategoryByPayment(insertData, userId);
         }
-        System.out.println("categoryId : " + categoryId);
-        assertNotNull(categoryId);
+        assertNotNull(category);
     }
 
 

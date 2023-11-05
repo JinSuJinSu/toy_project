@@ -1,4 +1,4 @@
-package com.poscodx.economy.repository;
+package com.poscodx.economy.RepositoryIntegration;
 
 import com.poscodx.economy.config.QuerydslConfiguration;
 import com.poscodx.economy.dbinit.CategoryTestUtils;
@@ -22,12 +22,9 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Import;
 
-import java.util.List;
 import java.util.Optional;
 
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
 import static org.mockito.Mockito.when;
 
 @DataJpaTest
@@ -38,10 +35,10 @@ public class PaymentRepositoryTest {
     @Autowired
     private TestEntityManager em;
 
-    @Autowired
+    @Mock
     private UserRepository userRepository;
 
-    @Autowired
+    @Mock
     private CategoryRepository categoryRepository;
 
     @Autowired
@@ -49,21 +46,6 @@ public class PaymentRepositoryTest {
 
     @BeforeEach
     public void init() {
-        UserTestUtils.addUser(em);
-        User user = userRepository.findByUserId("hjs429");
-        CategoryTestUtils.addCategory(em,user);
-
-        // 카테고리 데이터 추가
-        Category category1 = categoryRepository.findByName("식비");
-        Category category2 = categoryRepository.findByName("자기개발");
-        Category category3 = categoryRepository.findCategoryName("투자수익");
-
-        // 세부카테고리에 데이터 집어넣기
-        CategoryTestUtils.addDetailCategory(em, "개인식비",category1);
-        CategoryTestUtils.addDetailCategory(em, "운동",category2);
-        CategoryTestUtils.addDetailCategory(em, "회사월급",category3);
-
-        // 세부카테고리에 대한 지불내역 데이터 집어넣기
 
     }
 
@@ -71,11 +53,22 @@ public class PaymentRepositoryTest {
     @DisplayName("Payment 조회 테스트")
     void searchPayment(){
         // given
+        User user = UserTestUtils.createUser("hjs429", "1234", "하진수",
+                "010-2632-2615", "hjs928@naver.com", UserGrade.ADMIN);
+        when(userRepository.findByUserId("hjs429")).thenReturn(user);
+
+        // 카테고리 데이터 추가
+        Category category = CategoryTestUtils.createCategory("식비", "식비 카테고리",
+                "아직은 없어도 된다.", user);
+        when(categoryRepository.findByName("식비")).thenReturn(category);
+
+        DetailCategory detailCategory = CategoryTestUtils.createDetailCategory
+                ("개인식비", "나중에", "아직은 없어도 된다.",category);
+
+
         // 세부카테고리에 대한 지불내역 데이터 집어넣기
-        Category category1 = categoryRepository.findByName("식비");
-        List<DetailCategory> detailCategory1 = categoryRepository.findDetailCategory
-                (category1.getName());
-        CategoryTestUtils.addPayment(em, "순대국밥",detailCategory1.get(0));
+        CategoryTestUtils.addPayment(em, "순대국밥",detailCategory);
+        em.flush();
         String insertData = "순대국밥";
 
         // when

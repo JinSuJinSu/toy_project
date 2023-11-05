@@ -17,9 +17,14 @@ import java.time.LocalDateTime;
 public class IncomeSpendingDto {
 
     private String id;
-    private String createdDate;
+    private String transactionDate;
     private String dataCode;
     private String content;
     private Long amount;
     private String categoryName;
+    private String userId;
+
+    public void filterId() {
+        this.id = null;
+    }
 }

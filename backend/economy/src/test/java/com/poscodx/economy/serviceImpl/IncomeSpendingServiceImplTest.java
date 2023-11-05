@@ -61,15 +61,17 @@ class IncomeSpendingServiceImplTest {
         Category category3 = CategoryTestUtils.createCategory("투자수익", "투자수익 카테고리",
                 "아직은 없어도 된다.", user);
 
+        LocalDateTime transactionDate = LocalDateTime.now();
+
         // 거래내역 데이터 목록
         IncomeSpending incomeSpending1 =
                 IncomeSpendingTestUtils.createIncomeSpending
-                        (DataCode.지출, "순대국밥", 10000L,user, category1);
+                        (DataCode.지출, "순대국밥", 10000L,transactionDate, user, category1);
         IncomeSpending incomeSpending2 =
                 IncomeSpendingTestUtils.createIncomeSpending
-                        (DataCode.지출, "권투수강", 30000L,user, category2);
+                        (DataCode.지출, "권투수강", 30000L,transactionDate, user, category2);
         IncomeSpending incomeSpending3 = IncomeSpendingTestUtils.createIncomeSpending
-                (DataCode.수입, "주식매도", 50000L,user, category3);
+                (DataCode.수입, "주식매도", 50000L,transactionDate, user, category3);
 
         // 초기 entity 객체 리스트
         List<IncomeSpending> IncomeSpendingList = Arrays.asList(
@@ -108,7 +110,53 @@ class IncomeSpendingServiceImplTest {
                 result.get(0).getContent(),result.get(1).getContent(),result.get(2).getContent());
     }
 
+    @Test
+    @DisplayName("거래내역 삽입 서비스 레이어 테스트")
+    void insertIncomeSpending() {
 
+        // given
+        User user = UserTestUtils.createUser("hjs429", "1234", "하진수",
+                "010-2632-2615", "hjs928@naver.com", UserGrade.ADMIN);
+
+        // 카테고리 목록
+        Category category1 = CategoryTestUtils.createCategory("식비", "식비 카테고리",
+                "아직은 없어도 된다.", user);
+        Category category2 = CategoryTestUtils.createCategory("자기개발", "자기개발 카테고리",
+                "아직은 없어도 된다.", user);
+        Category category3 = CategoryTestUtils.createCategory("투자수익", "투자수익 카테고리",
+                "아직은 없어도 된다.", user);
+        LocalDateTime transactionDate = LocalDateTime.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        String StringedTransactionDate = transactionDate.format(formatter);
+
+        // 거래내역 데이터 목록
+        IncomeSpending incomeSpending1 =
+                IncomeSpendingTestUtils.createIncomeSpending
+                        (DataCode.지출, "순대국밥", 10000L,transactionDate, user, category1);
+        IncomeSpending incomeSpending2 =
+                IncomeSpendingTestUtils.createIncomeSpending
+                        (DataCode.지출, "권투수강", 30000L,transactionDate, user, category2);
+        IncomeSpending incomeSpending3 = IncomeSpendingTestUtils.createIncomeSpending
+                (DataCode.수입, "주식매도", 50000L,transactionDate, user, category3);
+
+
+        // 삽입예정 데이터 목록
+        IncomeSpendingDto incomeSpendingDto1 =
+                IncomeSpendingTestUtils.createIncomeSpendingDto
+                        ("지출", "순대국밥", 4000L,StringedTransactionDate, "hjs429", null);
+        IncomeSpendingDto incomeSpendingDto2 =
+                IncomeSpendingTestUtils.createIncomeSpendingDto
+                        ("수입", "달러매도", 3000L,StringedTransactionDate, "hjs429", null);
+        IncomeSpendingDto incomeSpendingDto3 = IncomeSpendingTestUtils.createIncomeSpendingDto
+                ("지출", "김밥", 2000L,StringedTransactionDate, "hjs429", null);
+
+
+//        // mocking
+//        when(incomeSpendingRepository.insertIncomeSpendingList(anyString(), any(LocalDateTime.class),
+//                any(LocalDateTime.class))).thenReturn(IncomeSpendingList);
+//        when(userRepository.findByUserId(anyString())).thenReturn(user);
+
+    }
 
 
 

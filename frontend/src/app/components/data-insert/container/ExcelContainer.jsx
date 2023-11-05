@@ -1,20 +1,18 @@
 import React from "react";
 import { useState, useContext, useEffect } from "react";
 import { UserContext } from "app/contexts/UserContext";
-import { columns } from "../render/BasicTableHeader";
-import AppStore from "AppStore";
+import { columns } from "../render/ExcelTableHeader";
 import ExcelTableView from "../view/ExcelTableView";
+import ExcelInsertContainer from "./ExcelInsertContainer";
 import { observer } from "mobx-react-lite";
 import * as XLSX from "xlsx";
 import { Input } from "@mui/material";
 
 const ExcelContainer = observer(() => {
-  const userId = useContext(UserContext);
   const height = 400;
   const pagingList = [5, 10, 20];
   const [pageSize, setPageSize] = React.useState(5);
   const [rows, setRows] = useState([]);
-  const { ExcelStore } = AppStore();
 
   const fileInput = React.createRef();
   const fileReader = new FileReader();
@@ -41,7 +39,7 @@ const ExcelContainer = observer(() => {
         row.id = row.No;
       });
       rowData.forEach((row) => {
-        console.log("데이터를 구하시오 : ", row.출금);
+        console.log("데이터를 구하시오 : ", row);
       });
       setRows(rowData);
     });
@@ -54,6 +52,7 @@ const ExcelContainer = observer(() => {
 
   return (
     <>
+      <ExcelInsertContainer rows={rows} />
       <Input type="file" ref={fileInput} onChange={handleFileInput} />
       {/* <ul>
         {rows.map((item, index) => (

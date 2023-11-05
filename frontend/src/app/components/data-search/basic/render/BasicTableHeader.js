@@ -6,7 +6,7 @@ let columns = [
     headerName: "No",
   },
   {
-    field: "createdDate",
+    field: "transactionDate",
     headerName: "거래일시",
   },
   {

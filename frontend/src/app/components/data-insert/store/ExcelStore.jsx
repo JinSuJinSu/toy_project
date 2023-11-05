@@ -1,22 +1,26 @@
 import axios from "axios";
 import { observable, runInAction } from "mobx";
-import { toJS } from "mobx";
-import { dateTimeLogic } from "../model/BasicModel";
 
 const ExcelStore = observable({
   rows: [],
 
-  // 날짜별 거래내역서 데이터 조회
-  showInfo(userId, startDate, endDate) {
-    // Original date string
-    let formatedStartDate = dateTimeLogic(startDate);
-    let formatedEndDate = dateTimeLogic(endDate);
+  // 데이터 전체 삽입
+  insertData(userId, insertingData) {
+    insertingData.forEach((element) => {
+      element.userId = userId;
+      if (element.withdraw > 0) {
+        element.dataCode = "지출";
+        element.amount = element.withdraw;
+      }
+      if (element.deposit > 0) {
+        element.dataCode = "수입";
+        element.amount = element.deposit;
+      }
+    });
     axios
-      .get(`/api/test/${userId}/${formatedStartDate}/${formatedEndDate}`)
+      .post(`/api/incomeSpending/${userId}`, insertingData)
       .then((response) => {
-        runInAction(() => {
-          this.rows = response.data;
-        });
+        console.log(`데이터 삽입 완료 : ${response}`);
       });
   },
 });

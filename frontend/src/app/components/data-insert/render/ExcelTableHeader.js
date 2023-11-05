@@ -6,19 +6,19 @@ let columns = [
     headerName: "No",
   },
   {
-    field: "거래일시",
+    field: "transactionDate",
     headerName: "거래일시",
   },
   {
-    field: "거래내용",
+    field: "content",
     headerName: "거래내용",
   },
   {
-    field: "입금",
+    field: "deposit",
     headerName: "입금",
   },
   {
-    field: "출금",
+    field: "withdraw",
     headerName: "출금",
   },
 ];

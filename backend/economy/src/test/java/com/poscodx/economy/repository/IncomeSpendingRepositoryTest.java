@@ -4,15 +4,14 @@ import com.poscodx.economy.config.QuerydslConfiguration;
 import com.poscodx.economy.dbinit.CategoryTestUtils;
 import com.poscodx.economy.dbinit.IncomeSpendingTestUtils;
 import com.poscodx.economy.dbinit.UserTestUtils;
-import com.poscodx.economy.domain.Category;
-import com.poscodx.economy.domain.IncomeSpending;
-import com.poscodx.economy.domain.Payment;
-import com.poscodx.economy.domain.User;
+import com.poscodx.economy.domain.*;
 import com.poscodx.economy.enumration.DataCode;
 import com.poscodx.economy.repository.jpa.CategoryRepository;
 import com.poscodx.economy.repository.jpa.IncomeSpendingRepository;
+import com.poscodx.economy.repository.jpa.PaymentRepository;
 import com.poscodx.economy.repository.jpa.UserRepository;
 import com.poscodx.economy.repository.querydsl.CategoryRepositoryCustomImpl;
+import com.poscodx.economy.repository.querydsl.IncomeSpendingRepositoryCustomImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -23,7 +22,11 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Import;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.IntStream;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertNotNull;
@@ -31,20 +34,23 @@ import static org.junit.Assert.assertNull;
 
 @DataJpaTest
 @ComponentScan(basePackages = "com.poscodx.economy.repository")
-@Import({CategoryRepositoryCustomImpl.class, QuerydslConfiguration.class})
+@Import({CategoryRepositoryCustomImpl.class, IncomeSpendingRepositoryCustomImpl.class, QuerydslConfiguration.class})
 class IncomeSpendingRepositoryTest {
 
     @Autowired
     private TestEntityManager em;
 
     @Autowired
-    private IncomeSpendingRepository incomeSpendingRepository;
-
-    @Autowired
     private UserRepository userRepository;
 
     @Autowired
     private CategoryRepository categoryRepository;
+
+    @Autowired
+    private IncomeSpendingRepository incomeSpendingRepository;
+
+    @Autowired
+    private PaymentRepository paymentRepository;
 
     @BeforeEach
     public void init() {
@@ -58,19 +64,19 @@ class IncomeSpendingRepositoryTest {
         Category category2 = categoryRepository.findByName("자기개발");
         Category category3 = categoryRepository.findCategoryName("투자수익");
 
+        LocalDateTime transactionDate = LocalDateTime.now();
+
         IncomeSpendingTestUtils.addIncomeSpending(em, DataCode.지출, "순대국밥",
-                10000L,user, category1);
+                10000L, transactionDate, user, category1);
         IncomeSpendingTestUtils.addIncomeSpending(em, DataCode.지출, "권투수강",
-                30000L,user, category2);
-        IncomeSpendingTestUtils.addIncomeSpending(em, DataCode.수입, "주식매도",
-                50000L,user, category3);
-        
-        
+                30000L, transactionDate, user, category2);
+        IncomeSpendingTestUtils.addIncomeSpending(em, DataCode.수입, "국내주식매도",
+                50000L, transactionDate, user, category3);
     }
 
     @Test
     @DisplayName("유저생성 테스트")
-    void searchUser(){
+    void searchUser() {
         // given
         User user = userRepository.findByUserId("hjs429");
 
@@ -78,12 +84,11 @@ class IncomeSpendingRepositoryTest {
         String userId = user.getUserId();
         //then
         assertThat(userId).isEqualTo("hjs429");
-
     }
 
     @Test
     @DisplayName("카테고리 생성 테스트")
-    void searchCategory(){
+    void searchCategory() {
         // given
         Category category1 = categoryRepository.findByName("식비");
         Category category2 = categoryRepository.findByName("자기개발");
@@ -102,7 +107,7 @@ class IncomeSpendingRepositoryTest {
 
     @Test
     @DisplayName("거래내역 조회 테스트(날짜는 상황에 따라 다름)")
-    void searchIncomeSpending(){
+    void searchIncomeSpending() {
         // given
         LocalDateTime startDate = LocalDateTime.now().minusDays(0);
         LocalDateTime endDate = LocalDateTime.now().plusDays(3);
@@ -119,5 +124,64 @@ class IncomeSpendingRepositoryTest {
         assertThat(size).isEqualTo(0);
     }
 
+    @Test
+    @DisplayName("거래내역 삽입 테스트")
+    void insertIncomeSpending() {
+        // given
+        String userId = "hjs429";
+//        String paymentData = "순대국밥";
+        String paymentData = "사천짜장";
+        LocalDateTime transactionDate = LocalDateTime.now();
+        User user = userRepository.findByUserId(userId);
+        Category category = categoryRepository.findCategoryByPayment(paymentData, userId);
+        System.out.println("카테고리 데이터 : "+ category);
+        IncomeSpending incomeSpending = IncomeSpendingTestUtils.createIncomeSpending
+                (DataCode.지출, paymentData, 10000L, transactionDate, user, category);
 
+        // when
+        incomeSpendingRepository.save(incomeSpending);
+        IncomeSpending insertedIncomeSpending = incomeSpendingRepository.findFirstByOrderByIdDesc();
+
+        //then
+//        assertThat(insertedIncomeSpending.getContent()).isEqualTo("순대국밥");
+//        assertThat(insertedIncomeSpending.getCategory()).isNotNull();
+        assertThat(insertedIncomeSpending.getContent()).isEqualTo("사천짜장");
+        assertThat(insertedIncomeSpending.getCategory()).isNull();
+    }
+
+    @Test
+    @DisplayName("거래내역 전체 목록 삽입 테스트")
+    void insertIncomeSpendingList() {
+//        // given
+        String userId = "hjs429";
+        User user = userRepository.findByUserId(userId);
+        LocalDateTime transactionDate = LocalDateTime.now();
+        ArrayList<String> paymentList =  new ArrayList<String>(Arrays.asList("순대국밥","인프런강의","해외주식매도"));
+        ArrayList<DataCode> transactionList = new ArrayList<>();
+        transactionList.add(DataCode.지출);
+        transactionList.add(DataCode.지출);
+        transactionList.add(DataCode.수입);
+        // when
+        IntStream.range(0, paymentList.size()).forEach(index-> {
+            Optional<Payment> payment =  paymentRepository.findFirstByData(paymentList.get(index));
+            Category category = null;
+            if (payment.isPresent()) {
+                category = categoryRepository.findCategoryByPayment(paymentList.get(index), userId);
+            }
+            IncomeSpending incomeSpending = IncomeSpendingTestUtils.createIncomeSpending
+                (transactionList.get(index), paymentList.get(index), 10000L, transactionDate, user, category);
+            incomeSpendingRepository.save(incomeSpending);
+            }
+        );
+        List<IncomeSpending> incomeSpendingLis1 = incomeSpendingRepository.findAll();
+        List<IncomeSpending> incomeSpendingLis2 = incomeSpendingRepository.findByContent("순대국밥");
+        IncomeSpending latestIncomeSpending = incomeSpendingRepository.findFirstByOrderByIdDesc();
+
+
+        //then
+        assertThat(incomeSpendingLis1.size()).isEqualTo(6);
+        assertThat(incomeSpendingLis2.size()).isEqualTo(2);
+        assertThat(latestIncomeSpending.getContent()).isEqualTo("해외주식매도");
+
+    }
 }

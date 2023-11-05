@@ -12,7 +12,9 @@ const BasicStore = observable({
     let formatedStartDate = dateTimeLogic(startDate);
     let formatedEndDate = dateTimeLogic(endDate);
     axios
-      .get(`/api/test/${userId}/${formatedStartDate}/${formatedEndDate}`)
+      .get(
+        `/api/incomeSpending/${userId}/${formatedStartDate}/${formatedEndDate}`
+      )
       .then((response) => {
         runInAction(() => {
           this.rows = response.data;
