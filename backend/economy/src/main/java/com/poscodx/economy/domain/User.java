@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
-@ToString
+@ToString(of = {"id", "userId","password","name","phoneNumber","email","grade"})
 @Table(name = "user_info")
 @SequenceGenerator(
         name = "USER_SEQ_GENERATOR",

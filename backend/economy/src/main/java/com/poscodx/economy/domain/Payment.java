@@ -9,7 +9,7 @@ import javax.persistence.*;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString
+@ToString(of = {"id", "data"})
 @SequenceGenerator(
         name = "PAYMENT_SEQ_GENERATOR",
         sequenceName = "PAYMENT_SEQ",

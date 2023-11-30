@@ -38,9 +38,6 @@ const ExcelContainer = observer(() => {
       rowData.forEach((row) => {
         row.id = row.No;
       });
-      rowData.forEach((row) => {
-        console.log("데이터를 구하시오 : ", row);
-      });
       setRows(rowData);
     });
   };

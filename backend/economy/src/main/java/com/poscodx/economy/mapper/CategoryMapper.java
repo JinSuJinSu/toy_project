@@ -5,7 +5,7 @@ import com.querydsl.core.Tuple;
 import org.mapstruct.Mapper;
 
 @Mapper
-public class CategoryMapper {
+public interface CategoryMapper {
 
     public static CategoryDto toDto(Tuple element) {
         CategoryDto categoryDto =

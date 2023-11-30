@@ -23,6 +23,19 @@ export const dateTimeLogic = (dateTime) => {
   return formateDate;
 };
 
+export const checkCategory = (dataList) => {
+  let returnList = dataList;
+  returnList.forEach((data) => {
+    console.log("man!!!");
+    // if (data.categoryName === null || data.categoryName === undefined) {
+    if ((data.categoryName ?? "") === "") {
+      console.log("ememememem");
+      data.categoryName = "없음";
+    }
+  });
+  return returnList;
+};
+
 // let formateDate = `${date.getFullYear()}-${(
 //   "0" +
 //   (date.getMonth() + 1)

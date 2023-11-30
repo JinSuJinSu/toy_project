@@ -18,9 +18,6 @@ import java.util.List;
 @Repository
 public interface IncomeSpendingRepository extends
         JpaRepository<IncomeSpending, Long>, IncomeSpendingRepositoryCustom {
-
-    List<IncomeSpending> findAll();
-
     List<IncomeSpending> findByContent(String content);
     IncomeSpending findFirstByOrderByIdDesc();
 }

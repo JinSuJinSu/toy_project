@@ -13,7 +13,7 @@ import java.util.Optional;
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
-@ToString
+@ToString(of = {"id", "dataCode","content","amount","transactionDate"})
 @Table(name = "income_spending_info")
 @SequenceGenerator(
         name = "INCOME_SPENDING_SEQ_GENERATOR",

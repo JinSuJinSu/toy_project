@@ -14,5 +14,4 @@ public interface CategoryRepository extends JpaRepository<Category, Long>, Categ
 
 //    List<Payment> findByDetailCategory_CategoryCom_Name(String detailCategoryName);
 
-    List<Category> findAll();
 }

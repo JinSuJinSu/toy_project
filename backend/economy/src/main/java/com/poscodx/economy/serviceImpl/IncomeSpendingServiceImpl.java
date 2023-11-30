@@ -41,12 +41,14 @@ public class IncomeSpendingServiceImpl implements IncomeSpendingService {
 
         User user = userRepository.findByUserId(userId);
 
-        List<IncomeSpending> IncomeSpendingList =
+        List<IncomeSpending> incomeSpendingList =
                 incomeSpendingRepository.findDataByDateTime(userId, startDateTime, endDateTime);
-        List<IncomeSpendingDto> IncomeSpendingDtoList = IncomeSpendingList.stream()
+        log.info("조회된 데이터의 총 개수 : {}",incomeSpendingList.size());
+        incomeSpendingList.forEach(data->log.info("조회된 거래내역 데이터 : {}", data));
+        List<IncomeSpendingDto> incomeSpendingDtoList = incomeSpendingList.stream()
                         .map(m -> IncomeSpendingMapper.INSTANCE.toDto(m))
                         .collect(Collectors.toList());
-        return IncomeSpendingDtoList;
+        return incomeSpendingDtoList;
     }
     @Override
     public void insertIncomeSpending(String userId, String paymentData) {

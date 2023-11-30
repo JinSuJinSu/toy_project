@@ -10,7 +10,7 @@ import javax.validation.constraints.NotNull;
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
-@ToString
+@ToString(of = {"id", "name","content","categoryData"})
 @SequenceGenerator(
         name = "CATEGORY_SEQ_GENERATOR",
         sequenceName = "CATEGORY_SEQ",

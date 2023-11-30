@@ -1,7 +1,7 @@
 import axios from "axios";
 import { observable, runInAction } from "mobx";
 import { toJS } from "mobx";
-import { dateTimeLogic } from "../model/BasicModel";
+import { dateTimeLogic, checkCategory } from "../model/BasicModel";
 
 const BasicStore = observable({
   rows: [],
@@ -17,7 +17,7 @@ const BasicStore = observable({
       )
       .then((response) => {
         runInAction(() => {
-          this.rows = response.data;
+          this.rows = checkCategory(response.data);
         });
       });
   },
